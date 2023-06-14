@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Result</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <div id="divPlotly"></div>
+
+  <script>
+    var graph = {{graphJSON | safe}};
+    Plotly.newPlot('divPlotly', graph.data, graph.layout);
+  </script>
+</body>
+</html>

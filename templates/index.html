@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask Plotly App</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <textarea id="code" rows="10" cols="50">
+        go.Figure(data=[go.Bar(y=[2, 3, 1])])
+    </textarea>
+    <button id="run">Run</button>
+    <div id="plot"></div>
+
+    <script>
+    $(document).ready(function() {
+        $('#run').click(function() {
+            $.post('/plot', { code: $('#code').val() }, function(fig) {
+                Plotly.newPlot('plot', fig);
+            });
+        });
+    });
+    </script>
+</body>
+</html>
