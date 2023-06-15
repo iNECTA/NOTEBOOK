@@ -11,18 +11,30 @@ import MessageParser from './MessageParser';
 import config from './config';
 
 const initialPythonCode = `
-# This is a Plotly chart defined in Python
-import plotly.graph_objects as go
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import pandas as pd
+import plotly.express as px
+import random
 
-fig = go.Figure(data=go.Sunburst(
-    labels=["Male", "Female", "20-29", "30-39", "20-29", "30-39"],
-    parents=["", "", "Male", "Male", "Female", "Female"],
-    values=[10, 15, 5, 5, 7, 8],
-))
+# Create a dataframe with random data
+df = pd.DataFrame({
+    'Category': ['A', 'B', 'C', 'D', 'E'],
+    'Value': [random.randint(0, 100) for _ in range(5)]
+})
 
-fig.update_layout(margin=dict(t=0, l=0, r=0, b=0))
+fig = px.bar(df, x='Category', y='Value')
 
-fig.show()
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    html.H1("Random Data Bar Chart"),
+    dcc.Graph(figure=fig)
+])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
 `;
 
 function App() {
@@ -32,8 +44,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', height: '100vh' }}>
-          <div className="chatbot" style={{ width: '40%' }}>
-            <Chatbot config={config} actionProvider={ActionProvider} messageParser={MessageParser} className="fullWidth"/>
+          <div className="chatbot" style={{ width: '30%' }}>
+            <Chatbot config={config} actionProvider={ActionProvider} messageParser={MessageParser} />
           </div>
           <div className="code" style={{ margin: '20px', width: '30%', backgroundColor: '#f5f5f5', borderRadius: '5px' }}>
             <AceEditor
@@ -61,7 +73,7 @@ function App() {
                 ]}
                 useResizeHandler={true}
                 style={{ width: "100%", height: "100%" }}
-                layout={{title: 'Sunburst Chart', autosize: true}}
+                layout={{title: 'Dash Plotly Chart', autosize: true}}
             />
           </div>
         </div>
